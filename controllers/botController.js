@@ -28,6 +28,7 @@ const getPrice = (coinPair) => {
         coinPair = coinPair.toUpperCase();
         apiController.callApi(`${binanceApi}ticker/24hr?symbol=${coinPair}`)
             .then(coin => {
+                //console.log(coin);
                 if(coin.code === -1121) return reject("Bad coin pairing");
                 let msg = `Here is the latest data on ${coinPair} from Binance:
                 Price Change%: ${coin.priceChangePercent}%
@@ -45,8 +46,7 @@ const getPrice = (coinPair) => {
                 `.trim();
                 return resolve(msg);
             })
-            .catch((err) => {return reject(err) });
-
+        .catch(err => { return reject(err)});
     })
 }
 const flagDebugMode = (channel) => {
@@ -115,5 +115,17 @@ const stopWatch = (timerId) => {
     clearInterval(timerId);
 }
 
+const showHelp = (channel) => {
+    channel.send(`Aventus Crypto Bot Help\n\n
+    Please note: any commands that require a coin require a proper coin pair - the Symbol of the Coin and the Coin it's valued against.  For example, Lite Coin on the Bitcoin
+    pairing will be LTCBTC.\n\n
+    Working Commands\n
+    ------------------------\n
+    !price COINPAIR //Returns current data from Binance\n
+    !big-gains  // Returns top coins (from CMC) with larger than 45% gains in 24hrs\n
+    !big-gains1h // Returns top coins (from CMC) with larger than 25% gains in the last hour\n
 
-module.exports = { getPrice, watchCoin, stopWatch, flagDebugMode, bigGains, bigGains1hr }
+    `)
+}
+
+module.exports = { getPrice, watchCoin, stopWatch, flagDebugMode, bigGains, bigGains1hr, showHelp }

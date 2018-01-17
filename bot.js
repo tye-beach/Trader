@@ -30,7 +30,7 @@ discordClient.on("message", (message) => {
             if(msg.length == 1) return chnl.send("Please include a valid coin pair e.g. LTCBTC");
             Bot.getPrice(msg[1])
                 .then((msg) => { return chnl.send(msg) })
-                .catch((err) => {return chnl.send(err) });
+                .catch(() => chnl.send("Invalid coin pair.  Please format (for example): XRPETH."));
             break;
         case "!watch":
             if(msg.length == 1) return chnl.send("Please include a valid coin pair e.g. LTCBTC");
@@ -58,6 +58,9 @@ discordClient.on("message", (message) => {
         case "!big-gains1h":
             chnl.send("Searching for big gains (>25%) :rocket: in the past hour according to CoinMarketCap");
             Bot.bigGains1hr(chnl);
+            break;
+        case "!bot-help":
+            Bot.showHelp(chnl);
             break;
         case "!debug":
             Bot.flagDebugMode(chnl);
