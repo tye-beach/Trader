@@ -1,12 +1,13 @@
 const Discord = require('discord.js');
 const request = require('request');
 const Twitter = require('twitter');
+const Express = require('express');
 const Bot = require('./controllers/botController');
 const discordClient = new Discord.Client();
 
 const binanceApi = "https://api.binance.com/";
 const marketCapApi = "https://api.coinmarketcap.com/v1/";
-
+const app = Express();
 
 
 var coinPairs = {};
@@ -68,3 +69,5 @@ discordClient.on("message", (message) => {
 
 
 discordClient.login(process.env.DISCORDAUTH || require('./auth/discordAuth').secret);
+
+app.listen(process.env.PORT || 3000);
