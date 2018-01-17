@@ -64,9 +64,9 @@ const watchCoin = (coinPair, channel) => {
     coinList[coinPair] = {
         timesRan: 0,
     }
+    channel.send("```I'm now tracking " + coinPair + "```");
     return new Promise((resolve, reject) => { 
         let newInterval = setInterval(() => {
-            channel.send("```I'm now tracking " + coinPair + "```");
             apiController.callApi(`${binanceApi}klines?symbol=${ coinPair}&interval=1m`).then(data => {
                 if(coinList[coinPair].high == null) coinList[coinPair].high = [];
                 if(coinList[coinPair].low == null) coinList[coinPair].low = [];
