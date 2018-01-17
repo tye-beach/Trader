@@ -26,7 +26,7 @@ discordClient.on("message", (message) => {
     let msg = message.content.toLowerCase().split(' ');
     
     switch(msg[0]) {
-        case "!price":
+        case "!crypto-price":
             if(msg.length == 1) return chnl.send("Please include a valid coin pair e.g. LTCBTC");
             Bot.getPrice(msg[1])
                 .then((msg) => { return chnl.send(msg) })
@@ -61,6 +61,9 @@ discordClient.on("message", (message) => {
             break;
         case "!bot-help":
             Bot.showHelp(chnl);
+            break;
+        case "!tracked-coins":
+            Bot.trackedCoins(chnl);
             break;
         case "!debug":
             Bot.flagDebugMode(chnl);

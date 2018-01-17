@@ -9,17 +9,23 @@ const coinList = {};
 
 let debugMode = false;
 
-const runCoinCompare = (coin, channel) => {
-    if(coin.volume.length <= 1) return;
-    let compareClose = 0,
-        compareOpen = 0,
-        compareVolume = 0;
-    for(let i = 1; i < coin.volume.length; i++) {
-        compareVolume += coin.volume[i] - coin.volume[i - 1];
-        compareOpen += coin.open[i] - coin.open[i - 1];
-        compareClose += coin.close[i] - coin.close[i - 1];
+const runCoinCompare = (coinPair, coin, channel) => {
+    if(coin.high.length <= 1) return;
+    if(coin.high.length >= 30) {
+        coin.high = [];
+        coin.low = [];
+        return;
     }
-    channel.send(`Compare Volume: ${ compareVolume }\nCompare Open: ${ compareOpen }\nCompare Close: ${compareClose}`);
+    let timesHigh = 0,
+        timesLow = 0;
+    
+    for(let i = 1; i < coin.high.length; i++) {
+        if(coin.high[i] > (coin.high[i-1] / .75)) timesHigh++;
+        if(coin.low[i] > coin.low[i-1]) timesLow++;
+    }
+
+    if(timesHigh >= 2 && timesLow > 1)
+        channel.send("```" + coinPair + " has had some significant gains in the past " + (coin.high.length * 5) / 1000 + " seconds.```");
 }
 
 
@@ -60,29 +66,30 @@ const watchCoin = (coinPair, channel) => {
     }
     return new Promise((resolve, reject) => { 
         let newInterval = setInterval(() => {
-            if(debugMode) channel.send("We're now tracking " + coinPair);
+            channel.send("```I'm now tracking " + coinPair + "```");
             apiController.callApi(`${binanceApi}klines?symbol=${ coinPair}&interval=1m`).then(data => {
-                if(coinList[coinPair].open == null) coinList[coinPair].open = [];
-                if(coinList[coinPair].close == null) coinList[coinPair].close = [];
-                if(coinList[coinPair].volume == null) coinList[coinPair].volume = [];
-                coinList[coinPair].lastVolumeGain = false;
-                coinList[coinPair].lastOpenGain = false;
-                coinList[coinPair].lastCloseGain = false;
-                coinList[coinPair].open.push(data[0][1]);
-                coinList[coinPair].close.push(data[0][4]);
-                coinList[coinPair].volume.push(data[0][5]);
-                if(debugMode) channel.send(`\n
-                        Data for: ${coinPair}\n
-                        Open: ${data[0][1]}\n
-                        Close: ${data[0][4]}
-                        Volume: ${data[0][5]}`.trim());
-                runCoinCompare(coinList[coinPair], channel);
-                
+                if(coinList[coinPair].high == null) coinList[coinPair].high = [];
+                if(coinList[coinPair].low == null) coinList[coinPair].low = [];
+                coinList[coinPair].high.push(data[0][2]);
+                coinList[coinPair].low.push(data[0][3]);
+                runCoinCompare(coinPair, coinList[coinPair], channel);                
             })
             
-        }, 15000);
+        }, 5000);
         resolve(newInterval);
     });
+}
+
+const trackedCoins = (channel) => {
+    if(Object.keys(coinList).length === 0) return channel.send("Sorry, I'm not tracking any coins.");
+    var coins = [];
+    for(var i in coinList) {
+        coins.push(i);
+    }
+    
+    coins.forEach((current) => {
+        channel.send("```Tracking: " + current + "```");
+    })
 }
 
 const bigGains = (channel) => {
@@ -118,11 +125,16 @@ const showHelp = (channel) => {
     channel.send("```Aventus Crypto Bot Help\n\n" +
     "Please note: any commands that require a coin require a proper coin pair - the Symbol of the Coin and the Coin it's valued against.  For example, Lite Coin on the Bitcoin\n" +
     "pairing will be LTCBTC.\n\n" +
+    "Adding coins to the watch list will check the data of the coin every 5 seconds to see if there is any 25% jumps in price.  If this happens twice during the " +
+    "duration of polling, the channel will be alerted.\n\n" +
     "Working Commands\n" +
-    "------------------------\n" +
-    "!price COINPAIR    //Returns current data from Binance\n" +
-    "!big-gains         // Returns top coins (from CMC) with larger than 45% gains in 24hrs\n"+
-    "!big-gains1h       // Returns top coins (from CMC) with larger than 25% gains in the last hour\n```");
+    "----------------------------------------------------------------\n" +
+    "!crypto-price {COINPAIR}    //Returns current data from Binance\n" +
+    "!big-gains           // Returns top coins (from CMC) with larger than 45% gains in 24hrs\n"+
+    "!big-gains1h         // Returns top coins (from CMC) with larger than 25% gains in the last hour\n" + 
+    "!watch {COINPAIR}    // Adds a coin to the watch list" + 
+    "!stop {COINPAIR}     // Removes a coin from the watch list" + 
+    "!tracked-coins       // Returns a list of the coins being tracked.```");
 }
 
-module.exports = { getPrice, watchCoin, stopWatch, flagDebugMode, bigGains, bigGains1hr, showHelp }
+module.exports = { getPrice, watchCoin, stopWatch, flagDebugMode, bigGains, bigGains1hr, showHelp, trackedCoins }
