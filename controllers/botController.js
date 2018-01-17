@@ -132,7 +132,7 @@ const showHelp = (channel) => {
     "!crypto-price {COINPAIR}    //Returns current data from Binance\n" +
     "!big-gains           // Returns top coins (from CMC) with larger than 45% gains in 24hrs\n"+
     "!big-gains1h         // Returns top coins (from CMC) with larger than 25% gains in the last hour\n" + 
-    "!watch {COINPAIR}    // Adds a coin to the watch list\n" + 
+    "!track {COINPAIR}    // Adds a coin to the watch list\n" + 
     "!stop {COINPAIR}     // Removes a coin from the watch list\n" + 
     "!tracked-coins       // Returns a list of the coins being tracked.\n```");
 }

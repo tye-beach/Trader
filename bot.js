@@ -32,7 +32,7 @@ discordClient.on("message", (message) => {
                 .then((msg) => { return chnl.send(msg) })
                 .catch(() => {return chnl.send("Invalid coin pair.  Please format (for example): XRPETH.")});
             break;
-        case "!watch":
+        case "!track":
             if(msg.length == 1) return chnl.send("Please include a valid coin pair e.g. LTCBTC");
             coinKey = msg[1].toUpperCase();
             if(!(coinKey in coinPairs)) {
