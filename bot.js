@@ -3,8 +3,7 @@ const request = require('request');
 const Twitter = require('twitter');
 const Bot = require('./controllers/botController');
 const discordClient = new Discord.Client();
-const twitterClient = new Twitter(twitterAuth.twitterAuth);
-const discordAuth = require('./auth/discordAuth');
+
 const binanceApi = "https://api.binance.com/";
 const marketCapApi = "https://api.coinmarketcap.com/v1/";
 
@@ -68,4 +67,4 @@ discordClient.on("message", (message) => {
 
 
 
-discordClient.login(process.env.DISCORDAUTH || discordAuth.secret);
+discordClient.login(process.env.DISCORDAUTH || require('./auth/discordAuth').secret);
