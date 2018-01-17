@@ -30,7 +30,7 @@ discordClient.on("message", (message) => {
             if(msg.length == 1) return chnl.send("Please include a valid coin pair e.g. LTCBTC");
             Bot.getPrice(msg[1])
                 .then((msg) => { return chnl.send(msg) })
-                .catch(() => chnl.send("Invalid coin pair.  Please format (for example): XRPETH."));
+                .catch(() => {return chnl.send("Invalid coin pair.  Please format (for example): XRPETH.")});
             break;
         case "!watch":
             if(msg.length == 1) return chnl.send("Please include a valid coin pair e.g. LTCBTC");

@@ -31,20 +31,22 @@ const getPrice = (coinPair) => {
                 //console.log(coin);
                 if(coin.code === -1121) return reject("Bad coin pairing");
                 let msg = `Here is the latest data on ${coinPair} from Binance:
-                Price Change%: ${coin.priceChangePercent}%
-                Previous Close: ${ coin.prevClosePrice }
-                Last Price: ${ coin.lastPrice }
-                Bid Price: ${ coin.bidPrice }
-                Ask Price: ${ coin.askPrice }
-                Open Price: ${ coin.openPrice }
-                High Price: ${coin.highPrice }
-                Low Price: ${coin.lowPrice}
-                Volumn: ${ coin.volume }
-                Open Time: ${ Moment.unix(coin.openTime).format("hh:mm A") }
-                Close Time: ${ Moment.unix(coin.closeTime).format("hh:mm A") }
-                Trade Count: ${ coin.count }
-                `.trim();
-                return resolve(msg);
+                
+                
+                **Price Change%**  : ${coin.priceChangePercent}% 
+                **Previous Close** : ${ coin.prevClosePrice }
+                **Last Price**     : ${ coin.lastPrice }
+                **Bid Price**      : ${ coin.bidPrice }
+                **Ask Price**      : ${ coin.askPrice }
+                **Open Price**     : ${ coin.openPrice }
+                **High Price**     : ${coin.highPrice }
+                **Low Price**      : ${coin.lowPrice}
+                **Volume**         : ${ coin.volume }
+                **Open Time**      : ${ Moment.unix(coin.openTime).format("hh:mm A") }
+                **Close Time**     : ${ Moment.unix(coin.closeTime).format("hh:mm A") }
+                **Trade Count**    : ${ coin.count }
+                `;
+                resolve(msg);
             })
         .catch(err => { return reject(err)});
     })
