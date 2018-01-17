@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
 const request = require('request');
 const Twitter = require('twitter');
-const twitterAuth = require('./auth/twitterAuth');
 const Bot = require('./controllers/botController');
 const discordClient = new Discord.Client();
 const twitterClient = new Twitter(twitterAuth.twitterAuth);
