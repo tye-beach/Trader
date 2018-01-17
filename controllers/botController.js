@@ -30,22 +30,19 @@ const getPrice = (coinPair) => {
             .then(coin => {
                 //console.log(coin);
                 if(coin.code === -1121) return reject("Bad coin pairing");
-                let msg = `Here is the latest data on ${coinPair} from Binance:
-                
-                
-                **Price Change%**  : ${coin.priceChangePercent}% 
-                **Previous Close** : ${ coin.prevClosePrice }
-                **Last Price**     : ${ coin.lastPrice }
-                **Bid Price**      : ${ coin.bidPrice }
-                **Ask Price**      : ${ coin.askPrice }
-                **Open Price**     : ${ coin.openPrice }
-                **High Price**     : ${coin.highPrice }
-                **Low Price**      : ${coin.lowPrice}
-                **Volume**         : ${ coin.volume }
-                **Open Time**      : ${ Moment.unix(coin.openTime).format("hh:mm A") }
-                **Close Time**     : ${ Moment.unix(coin.closeTime).format("hh:mm A") }
-                **Trade Count**    : ${ coin.count }
-                `;
+                let msg = "```Here is the latest data on " + coinPair + " from Binance: \n" +
+                "\nPrice Change%     : " + coin.priceChangePercent +
+                "\nPrevious Close    : " + coin.prevClosePrice +
+                "\nLast Price        : " + coin.lastPrice + 
+                "\nBid Price         : " + coin.bidPrice +
+                "\nAsk Price         : " + coin.askPrice +
+                "\nOpen Price        : " + coin.openPrice +
+                "\nHigh Price        : " + coin.highPrice +
+                "\nLow Price         : " + coin.lowPrice +
+                "\nVolume            : " + coin.volume  +
+                "\nOpen Time         : " + Moment.unix(coin.openTime).format("hh:mm A") +
+                "\nClose Time        : " + Moment.unix(coin.closeTime).format("hh:mm A") +
+                "\nTrade Count       : " + coin.count + "```";
                 resolve(msg);
             })
         .catch(err => { return reject(err)});
@@ -118,16 +115,14 @@ const stopWatch = (timerId) => {
 }
 
 const showHelp = (channel) => {
-    channel.send(`Aventus Crypto Bot Help\n\n
-    Please note: any commands that require a coin require a proper coin pair - the Symbol of the Coin and the Coin it's valued against.  For example, Lite Coin on the Bitcoin
-    pairing will be LTCBTC.\n\n
-    Working Commands\n
-    ------------------------\n
-    !price COINPAIR //Returns current data from Binance\n
-    !big-gains  // Returns top coins (from CMC) with larger than 45% gains in 24hrs\n
-    !big-gains1h // Returns top coins (from CMC) with larger than 25% gains in the last hour\n
-
-    `)
+    channel.send("```Aventus Crypto Bot Help\n\n" +
+    "Please note: any commands that require a coin require a proper coin pair - the Symbol of the Coin and the Coin it's valued against.  For example, Lite Coin on the Bitcoin\n" +
+    "pairing will be LTCBTC.\n\n" +
+    "Working Commands\n" +
+    "------------------------\n" +
+    "!price COINPAIR    //Returns current data from Binance\n" +
+    "!big-gains         // Returns top coins (from CMC) with larger than 45% gains in 24hrs\n"+
+    "!big-gains1h       // Returns top coins (from CMC) with larger than 25% gains in the last hour\n```");
 }
 
 module.exports = { getPrice, watchCoin, stopWatch, flagDebugMode, bigGains, bigGains1hr, showHelp }
