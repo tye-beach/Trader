@@ -20,7 +20,7 @@ const runCoinCompare = (coinPair, coin, channel) => {
         timesLow = 0;
     
     for(let i = 1; i < coin.high.length; i++) {
-        if(coin.high[i] > (coin.high[i-1] / .75)) timesHigh++;
+        if(coin.high[i] > (coin.high[i-1] / .90) && coin.high[i] < (coin.high[i-1] / .80)) timesHigh++;
         if(coin.low[i] > coin.low[i-1]) timesLow++;
     }
 
@@ -93,7 +93,7 @@ const trackedCoins = (channel) => {
 }
 
 const bigGains = (channel) => {
-    apiController.callApi(`${ marketCapApi}ticker/?limit=1500`).then(data => {
+    apiController.callApi(`${ marketCapApi}ticker/?limit=500`).then(data => {
         data = data.filter(coin => coin.percent_change_24h > 45);
         data.forEach((current) => { 
             channel.send("```" +
@@ -106,7 +106,7 @@ const bigGains = (channel) => {
 }
 
 const bigGains1hr = (channel) => {
-    apiController.callApi(`${ marketCapApi}/ticker/?limit=1500`).then(data => {
+    apiController.callApi(`${ marketCapApi}/ticker/?limit=500`).then(data => {
         data = data.filter(coin => coin.percent_change_1h > 25);
         data.forEach((current) => {
             channel.send("```"+
