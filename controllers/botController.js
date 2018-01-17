@@ -89,11 +89,11 @@ const bigGains = (channel) => {
     apiController.callApi(`${ marketCapApi}ticker/?limit=1500`).then(data => {
         data = data.filter(coin => coin.percent_change_24h > 45);
         data.forEach((current) => { 
-            channel.send(`
-                ${ current.name }/${ current.symbol } gains: 
-                1h: ${current.percent_change_1h }%
-                24h: ${ current.percent_change_24h}%
-            `.trim());
+            channel.send("```" +
+                current.name + " / " + current.symbol + " gains:" + 
+                "\n1h   : " + current.percent_change_1h + "%" +
+                "\n24h  : " + current.percent_change_24h +"%```"
+            );
         })
     })
 }
@@ -102,10 +102,10 @@ const bigGains1hr = (channel) => {
     apiController.callApi(`${ marketCapApi}/ticker/?limit=1500`).then(data => {
         data = data.filter(coin => coin.percent_change_1h > 25);
         data.forEach((current) => {
-            channel.send(`
-                ${ current.name }/${ current.symbol } gains: 
-                1h: ${current.percent_change_1h }%
-            `.trim())
+            channel.send("```"+
+                current.name + "/" + current.symbol + " gains:" + 
+                "\n1h   : " + current.percent_change_1h + "%```"
+            );
         })
     });
 }
