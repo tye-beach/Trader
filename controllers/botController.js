@@ -20,7 +20,7 @@ const runCoinCompare = (coinPair, coin, channel) => {
         timesLow = 0;
     
     for(let i = 1; i < coin.high.length; i++) {
-        if(coin.high[i] > (coin.high[i-1] / .90) && coin.high[i] < (coin.high[i-1] / .80)) timesHigh++;
+        if(coin.high[i] > (coin.high[i-1] * 1.10) && coin.high[i] < (coin.high[i-1] * 1.20)) timesHigh++;
         if(coin.low[i] > coin.low[i-1]) timesLow++;
     }
 
