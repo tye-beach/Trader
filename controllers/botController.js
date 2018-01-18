@@ -62,31 +62,28 @@ const watchCoin = (coinPair, channel) => {
     if(channel == null) return false;
     if(coinPair.trim().length < 6) return channel("```Not a valid coin pair```");
     //channel.send("Watching " + coinPair);
-    return new Promise((resolve, reject) => { 
-        let newInterval = setInterval(() => {
-            apiController.callApi(`${binanceApi}klines?symbol=${ coinPair}&interval=1m`).then(data => {
-                //if(data.code === -1121) return channel.send("Invalid coin pair");
-                if(!data) {
-                    clearInterval(newInterval);
-                    return channel.send("Not a valid coin pair");
-                }
-                
-                channel.send("```I'm now tracking " + coinPair + "```");
-                if(coinList[coinPair].high == null) coinList[coinPair].high = [];
-                if(coinList[coinPair].low == null) coinList[coinPair].low = [];
-                coinList[coinPair].high.push(data[0][2]);
-                coinList[coinPair].low.push(data[0][3]);
-                runCoinCompare(coinPair, coinList[coinPair], channel);        
-                return;        
-            })
-            .catch(err => {
+    coinList[coinPair].interval = setInterval(() => {
+        apiController.callApi(`${binanceApi}klines?symbol=${ coinPair}&interval=1m`).then(data => {
+            //if(data.code === -1121) return channel.send("Invalid coin pair");
+            if(!data) {
                 clearInterval(newInterval);
-                return channel.send("That is not a valid coinpair");
-            })
+                return channel.send("Not a valid coin pair");
+            }
             
-        }, 5000);
-        resolve(newInterval);
-    });
+            channel.send("```I'm now tracking " + coinPair + "```");
+            if(coinList[coinPair].high == null) coinList[coinPair].high = [];
+            if(coinList[coinPair].low == null) coinList[coinPair].low = [];
+            coinList[coinPair].high.push(data[0][2]);
+            coinList[coinPair].low.push(data[0][3]);
+            runCoinCompare(coinPair, coinList[coinPair], channel);        
+            return;        
+        })
+        .catch(err => {
+            clearInterval(newInterval);
+            return channel.send("That is not a valid coinpair");
+        })
+        
+    }, 5000);
 }
 
 const trackedCoins = (channel) => {
@@ -126,9 +123,9 @@ const bigGains1hr = (channel) => {
     });
 }
 
-const stopWatch = (timerId) => {
-    clearInterval(timerId);
-    delete coinList[timerId];
+const stopWatch = (coinPair) => {
+    clearInterval(coinList[coinPair].interval);
+    delete coinList[coinPair];
 }
 
 const showHelp = (channel) => {
