@@ -78,7 +78,7 @@ const watchCoin = (coinPair, channel) => {
                 coinList[coinPair].low.push(data[0][3]);
                 runCoinCompare(coinPair, coinList[coinPair], channel);                
             })
-            .catch(err => channel.send("Not a valid coinpair"))
+            .catch(err => channel.send("That is not a valid coinpair"))
             
         }, 5000);
         resolve(newInterval);
