@@ -49,7 +49,7 @@ discordClient.on("message", (message) => {
                 chnl.send("Nothing to stop!");
             else 
             {
-                Bot.stopWatch(coinPairs[coinKey]);
+                Bot.stopWatch(coinKey);
                 delete coinPairs[coinKey];
             }
             break;
