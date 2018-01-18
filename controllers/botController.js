@@ -67,8 +67,8 @@ const watchCoin = (coinPair, channel) => {
             apiController.callApi(`${binanceApi}klines?symbol=${ coinPair}&interval=1m`).then(data => {
                 //if(data.code === -1121) return channel.send("Invalid coin pair");
                 if(!data) {
-                    return channel.send("Not a valid coin pair");
                     clearInterval(newInterval);
+                    return channel.send("Not a valid coin pair");
                 }
                 
                 channel.send("```I'm now tracking " + coinPair + "```");
