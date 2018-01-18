@@ -78,7 +78,7 @@ const watchCoin = (coinPair, channel) => {
             return;        
         })
         .catch(err => {
-            stopWatch(coinpair);
+            stopWatch(coinPair);
             return channel.send("That is not a valid coinpair");
         })
         
