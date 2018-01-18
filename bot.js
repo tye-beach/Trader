@@ -62,7 +62,7 @@ discordClient.on("message", (message) => {
         case "!bot-help":
             Bot.showHelp(chnl);
             break;
-        case "!tracked-coins":
+        case "!tracking":
             Bot.trackedCoins(chnl);
             break;
         case "!debug":

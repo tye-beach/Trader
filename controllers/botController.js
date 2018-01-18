@@ -68,12 +68,15 @@ const watchCoin = (coinPair, channel) => {
     return new Promise((resolve, reject) => { 
         let newInterval = setInterval(() => {
             apiController.callApi(`${binanceApi}klines?symbol=${ coinPair}&interval=1m`).then(data => {
+                //if(data.code === -1121) return channel.send("Invalid coin pair");
+                if(!data) return channel.send("Not a valid coin pair");
                 if(coinList[coinPair].high == null) coinList[coinPair].high = [];
                 if(coinList[coinPair].low == null) coinList[coinPair].low = [];
                 coinList[coinPair].high.push(data[0][2]);
                 coinList[coinPair].low.push(data[0][3]);
                 runCoinCompare(coinPair, coinList[coinPair], channel);                
             })
+            .catch(err => channel.send("Not a valid coinpair"))
             
         }, 5000);
         resolve(newInterval);
@@ -134,7 +137,7 @@ const showHelp = (channel) => {
     "!big-gains1h         // Returns top coins (from CMC) with larger than 25% gains in the last hour\n" + 
     "!track {COINPAIR}    // Adds a coin to the watch list\n" + 
     "!stop {COINPAIR}     // Removes a coin from the watch list\n" + 
-    "!tracked-coins       // Returns a list of the coins being tracked.\n```");
+    "!tracking            // Returns a list of the coins being tracked.\n```");
 }
 
 module.exports = { getPrice, watchCoin, stopWatch, flagDebugMode, bigGains, bigGains1hr, showHelp, trackedCoins }
