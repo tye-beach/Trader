@@ -48,8 +48,10 @@ discordClient.on("message", (message) => {
             if(!(coinKey in coinPairs))
                 chnl.send("Nothing to stop!");
             else 
+            {
                 Bot.stopWatch(coinPairs[coinKey]);
-           
+                delete coinPairs[coinKey];
+            }
             break;
         case "!big-gains":
             chnl.send("Searching for big gains (>45%) :rocket: in the past 24hrs according to CoinMarketCap");

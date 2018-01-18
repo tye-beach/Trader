@@ -66,12 +66,10 @@ const watchCoin = (coinPair, channel) => {
     if(coinList[coinPair].interval == null) coinList[coinPair].interval = "";
     coinList[coinPair].interval = setInterval(() => {
         apiController.callApi(`${binanceApi}klines?symbol=${ coinPair}&interval=1m`).then(data => {
-            //if(data.code === -1121) return channel.send("Invalid coin pair");
-            if(!data) {
-                clearInterval(newInterval);
-                return channel.send("Not a valid coin pair");
-            }
-            
+            if(data.code === -1121 || !data) {
+                clearInterval(coinList[coinPair].interval);   
+                return channel.send("Invalid coin pair");
+            }           
             if(coinList[coinPair].high == null) coinList[coinPair].high = [];
             if(coinList[coinPair].low == null) coinList[coinPair].low = [];
             coinList[coinPair].high.push(data[0][2]);
