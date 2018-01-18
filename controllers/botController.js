@@ -60,16 +60,14 @@ const flagDebugMode = (channel) => {
 }
 const watchCoin = (coinPair, channel) => {
     if(channel == null) return false;
-    channel.send("Watching " + coinPair);
-    coinList[coinPair] = {
-        timesRan: 0,
-    }
-    channel.send("```I'm now tracking " + coinPair + "```");
+    if(coinPair.trim().length < 6) return channel("```Not a valid coin pair```");
+    //channel.send("Watching " + coinPair);
     return new Promise((resolve, reject) => { 
         let newInterval = setInterval(() => {
             apiController.callApi(`${binanceApi}klines?symbol=${ coinPair}&interval=1m`).then(data => {
                 //if(data.code === -1121) return channel.send("Invalid coin pair");
                 if(!data) return channel.send("Not a valid coin pair");
+                channel.send("```I'm now tracking " + coinPair + "```");
                 if(coinList[coinPair].high == null) coinList[coinPair].high = [];
                 if(coinList[coinPair].low == null) coinList[coinPair].low = [];
                 coinList[coinPair].high.push(data[0][2]);
@@ -122,6 +120,7 @@ const bigGains1hr = (channel) => {
 
 const stopWatch = (timerId) => {
     clearInterval(timerId);
+    delete coinList[timerId];
 }
 
 const showHelp = (channel) => {

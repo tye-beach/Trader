@@ -44,7 +44,7 @@ discordClient.on("message", (message) => {
             break;
         case "!stop":
             if(msg.length == 1) return chnl.send("Please include a valid coin pair e.g. LTCBTC");
-            coinKey = msg[1].toUpperCase();
+            coinKey = msg[1].toUpperCase().trim();
             if(!(coinKey in coinPairs))
                 chnl.send("Nothing to stop!");
             else 
