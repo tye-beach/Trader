@@ -36,7 +36,7 @@ discordClient.on("message", (message) => {
             if(msg.length == 1) return chnl.send("Please include a valid coin pair e.g. LTCBTC");
             coinKey = msg[1].toUpperCase();
             if(!(coinKey in coinPairs)) {
-                coinPairs[coinKey].isIn = true;
+                coinPairs[coinKey] = {};
                 Bot.watchCoin(coinKey, chnl);
             } else {
                 chnl.send(coinKey + ' is already being watched');
