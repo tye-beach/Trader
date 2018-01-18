@@ -76,7 +76,8 @@ const watchCoin = (coinPair, channel) => {
                 if(coinList[coinPair].low == null) coinList[coinPair].low = [];
                 coinList[coinPair].high.push(data[0][2]);
                 coinList[coinPair].low.push(data[0][3]);
-                runCoinCompare(coinPair, coinList[coinPair], channel);                
+                runCoinCompare(coinPair, coinList[coinPair], channel);        
+                return;        
             })
             .catch(err => {
                 clearInterval(newInterval);
