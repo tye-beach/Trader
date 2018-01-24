@@ -1,12 +1,12 @@
 # discord-bot
 A discord bot for a Crypto client
 
-Current commands:
-
-Please note: any commands that require a coin require a proper coin pair - the Symbol of the Coin and the Coin it's valued against.  For example, Lite Coin on the Bitcoin pairing will be LTCBTC.
+# Please note: 
+Any commands that require a coin require a proper coin pair - the Symbol of the Coin and the Coin it's valued against.  For example, Lite Coin on the Bitcoin pairing will be LTCBTC.
     
 Adding coins to the watch list will check the data of the coin every 5 seconds to see if there is any 10%-20% jumps in price.  If this happens twice during the duration of polling, the channel will be alerted.
-## Working Commands
+
+# Working Commands
     "----------------------------------------------------------------"
     "!crypto-price {COINPAIR}    //Returns current data from Binance" 
     "!big-gains           // Returns top coins (from CMC) with larger than 45% gains in 24hrs"
